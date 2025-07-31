@@ -1,0 +1,2 @@
+argument_name|||type|||Label to show|||browse_file|||browse_dir|||default_value
+input_file|||str|||Input SDF or MOL2 file path|||True|||False|||

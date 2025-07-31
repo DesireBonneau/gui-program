@@ -1,0 +1,3 @@
+argument_name|||type|||Label to show|||browse_file|||browse_dir|||default_value
+file_path|||str|||Input SDF file path|||True|||False|||
+name_length|||int|||Maximum name length to truncate to|||False|||False|||50

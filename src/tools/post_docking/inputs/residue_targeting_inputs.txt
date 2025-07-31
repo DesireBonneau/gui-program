@@ -1,0 +1,9 @@
+argument_name|||type|||Label to show|||browse_file|||browse_dir|||default_value
+file_path|||file|||Input SDF file path|||True|||False|||
+ref_interacts|||custom|||Reference interaction list (predefined for PreQ1 riboswitch)|||False|||False|||
+output_file_path|||str|||Filtered output SDF filename|||False|||True|||
+csv_file_path|||str|||Output CSV filename|||False|||True|||
+outliers|||str|||Outliers filename|||False|||False|||outliers.txt
+
+
+# input_name, input_type, input_desc, browse_file, browse_directory, input_default_value (separated by "|||")

@@ -1,0 +1,1 @@
+argument_name|||type|||Label to show|||browse_file|||browse_dir|||default_value

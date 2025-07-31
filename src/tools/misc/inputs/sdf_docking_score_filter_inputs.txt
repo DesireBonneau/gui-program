@@ -1,0 +1,4 @@
+argument_name|||type|||Label to show|||browse_file|||browse_dir|||default_value
+input_file|||str|||Input SMILES file path|||True|||False|||
+score_property|||str|||Score property to filter on|||False|||False|||
+threshold|||float|||Threshold value for filtering scores|||False|||False|||

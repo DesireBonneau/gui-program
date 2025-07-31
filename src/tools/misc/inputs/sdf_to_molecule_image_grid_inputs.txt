@@ -1,0 +1,2 @@
+argument_name|||type|||Label to show|||browse_file|||browse_dir|||default_value
+sdf_file|||str|||Input SDF file path|||True|||False|||

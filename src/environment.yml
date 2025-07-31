@@ -1,0 +1,7 @@
+PIP REQUIRED PACKAGES
+
+pip install pillow # for the UI
+pip install customtkinter # for the UI
+pip install rdkit # for the tools
+pip install matplotlib # for the tool (david)
+pip install pandas
