@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, Canvas
 from PIL import Image, ImageTk
+from fontTools.ufoLib import anchorValidator
+
 from tools.prototype_tool_window import ToolWindowPrototype
 import customtkinter as ctk
 

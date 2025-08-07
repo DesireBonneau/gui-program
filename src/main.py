@@ -50,6 +50,9 @@ class MainApp(tk.Tk):
             "TOOL 7",               # index=7
             "TOOL 8",               # index=8
             "TOOL 9",               # index=9
+            "TOOL 10",              # index=10
+            "TOOL 11",              # index=11
+            "TOOL 12",              # index=12
         ])
 
         self.post_docking_button_texts = self.wrap_and_pad_tool_names([
@@ -94,7 +97,7 @@ class MainApp(tk.Tk):
             # PRE-DOCKING TOOLS
 
             # POST-DOCKING TOOLS
-            (ToolWindowPrototype, "residue_targeting",{"tool_name": "RESIDUE TARGETING", "tool_category": "post_docking", "tool_inputs": "residue_targeting_inputs.txt", "path_to_code": "tools/post_docking/residue_targeting_david.py"}),
+            (ToolWindowPrototype, "residue_targeting",{"tool_name": "RESIDUE TARGETING", "tool_category": "post_docking", "tool_inputs": "residue_targeting_inputs.txt", "path_to_code": "tools/post_docking/residue_targeting.py"}),
 
             # MISC TOOLS
             (ToolWindowPrototype, "molecule_counter", {"tool_name": "Molecule Counter", "tool_category": "misc", "tool_inputs": "molecule_counter_inputs.txt", "path_to_code": "tools/misc/molecule_counter.py"}),

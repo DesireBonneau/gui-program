@@ -55,22 +55,13 @@ class PreDockingWindow(tk.Frame):
         button_tool3 = ttk.Button(scrollable_tool_frame, text=self.tool_list[3], style="Accent.TButton", width=self.max_tool_width)
         button_tool4 = ttk.Button(scrollable_tool_frame, text=self.tool_list[4], style="Accent.TButton", width=self.max_tool_width)
         button_tool5 = ttk.Button(scrollable_tool_frame, text=self.tool_list[5], style="Accent.TButton", width=self.max_tool_width)
-        button_tool6 = ttk.Button(scrollable_tool_frame, text=self.tool_list[6], style="Accent.TButton",
-                                  width=self.max_tool_width)
-        button_tool7 = ttk.Button(scrollable_tool_frame, text=self.tool_list[7], style="Accent.TButton",
-                                  width=self.max_tool_width)
-        button_tool8 = ttk.Button(scrollable_tool_frame, text=self.tool_list[8], style="Accent.TButton",
-                                  width=self.max_tool_width)
-        button_tool9 = ttk.Button(scrollable_tool_frame, text=self.tool_list[9], style="Accent.TButton",
-                                  width=self.max_tool_width)
-        button_tool10 = ttk.Button(scrollable_tool_frame, text=self.tool_list[6], style="Accent.TButton",
-                                  width=self.max_tool_width)
-        button_tool11 = ttk.Button(scrollable_tool_frame, text=self.tool_list[7], style="Accent.TButton",
-                                  width=self.max_tool_width)
-        button_tool12 = ttk.Button(scrollable_tool_frame, text=self.tool_list[8], style="Accent.TButton",
-                                  width=self.max_tool_width)
-        button_tool13 = ttk.Button(scrollable_tool_frame, text=self.tool_list[9], style="Accent.TButton",
-                                  width=self.max_tool_width)
+        button_tool6 = ttk.Button(scrollable_tool_frame, text=self.tool_list[6], style="Accent.TButton", width=self.max_tool_width)
+        button_tool7 = ttk.Button(scrollable_tool_frame, text=self.tool_list[7], style="Accent.TButton", width=self.max_tool_width)
+        button_tool8 = ttk.Button(scrollable_tool_frame, text=self.tool_list[8], style="Accent.TButton", width=self.max_tool_width)
+        button_tool9 = ttk.Button(scrollable_tool_frame, text=self.tool_list[9], style="Accent.TButton", width=self.max_tool_width)
+        button_tool10 = ttk.Button(scrollable_tool_frame, text=self.tool_list[10], style="Accent.TButton", width=self.max_tool_width)
+        button_tool11 = ttk.Button(scrollable_tool_frame, text=self.tool_list[11], style="Accent.TButton", width=self.max_tool_width)
+        button_tool12 = ttk.Button(scrollable_tool_frame, text=self.tool_list[12], style="Accent.TButton", width=self.max_tool_width)
 
 
 
@@ -103,7 +94,6 @@ class PreDockingWindow(tk.Frame):
         button_tool10.grid(row=1, column=3, ipadx=25, ipady=15, padx=50, pady=25, sticky="ew")
         button_tool11.grid(row=2, column=1, ipadx=25, ipady=15, padx=(75, 50), pady=25, sticky="ew")
         button_tool12.grid(row=2, column=2, ipadx=25, ipady=15, padx=50, pady=25, sticky="ew")
-        button_tool13.grid(row=2, column=3, ipadx=25, ipady=15, padx=50, pady=25, sticky="ew")
 
 
         """

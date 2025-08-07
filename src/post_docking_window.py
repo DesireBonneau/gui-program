@@ -50,7 +50,7 @@ class PostDockingWindow(tk.Frame):
         # --- ADD MORE TOOLS' TITLES HERE ---
         # --- THIS IS WHERE YOU CAN ADD MORE TOOLS USING THE PROTOTYPE DESIGN PATTERN ---
         button_tool1 = ttk.Button(scrollable_tool_frame, text=self.tool_list[1], style="Accent.TButton", width=self.max_tool_width, command=lambda: show_screen_callback("residue_targeting"))
-        button_tool2 = ttk.Button(scrollable_tool_frame, text=self.tool_list[2], style="Accent.TButton", width=self.max_tool_width, command=lambda: show_screen_callback("residue_targeting2"))
+        button_tool2 = ttk.Button(scrollable_tool_frame, text=self.tool_list[2], style="Accent.TButton", width=self.max_tool_width)
         button_tool3 = ttk.Button(scrollable_tool_frame, text=self.tool_list[3], style="Accent.TButton", width=self.max_tool_width)
         button_tool4 = ttk.Button(scrollable_tool_frame, text=self.tool_list[4], style="Accent.TButton", width=self.max_tool_width)
         button_tool5 = ttk.Button(scrollable_tool_frame, text=self.tool_list[5], style="Accent.TButton", width=self.max_tool_width)
