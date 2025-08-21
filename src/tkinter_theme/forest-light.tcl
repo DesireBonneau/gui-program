@@ -225,6 +225,7 @@ namespace eval ttk::theme::forest-light {
 
         # Button
         ttk::style configure TButton -padding {8 4 8 4} -width -10 -anchor center
+        ttk::style configure Accent.TButton -anchor center # the -anchor center is already there so I must have done it wrong
 
         ttk::style element create Button.button image \
             [list $I(rect-basic) \

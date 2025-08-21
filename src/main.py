@@ -33,6 +33,7 @@ class MainApp(tk.Tk):
         # To change the font size of the TLabelframe.Label
         style = ttk.Style()
         style.configure("TLabelframe.Label", font=("Helvetica Black", 10, "bold"))
+        style.configure("Accent.TButton", anchor="center")
 
         # Window configuration
         self.title("Program")
@@ -68,59 +69,127 @@ class MainApp(tk.Tk):
             "TOOL 9",               # index=9
         ])
 
-        self.misc_button_texts = self.wrap_and_pad_tool_names([
-            "",
-            "MOLECULE COUNTER",                     # index=1
-            "TRUNCATE LONG MOLECULE NAMES/IDs",     # index=2
-            "SDF/MOL2 FILE SPLITTER",               # index=3
-            "FILE MERGER: SDF/MOL2/SMI",            # index=4
-            "SMILES TO SDF CONVERTER",              # index=5
-            "MOL2/SDF TO SMILES CONVERTER",         # index=6
-            "SDF DOCKING SCORE FILTER",             # index=7
-            "MOLECULE VIEWER AND MANUAL FILTERING", # index=8
-            "SDF TO MOLECULE IMAGE GRID",           # index=9
-        ])
+        misc_tools = [
+            {
+                "button_label": "MOLECULE COUNTER",
+                "window_name": "molecule_counter",
+                "toolwindow_kwargs": {
+                    "tool_name": "Molecule Counter",
+                    "tool_category": "misc",
+                    "tool_inputs": "molecule_counter_inputs.txt",
+                    "path_to_code": "tools/misc/molecule_counter.py"
+                }
+            },
+            {
+                "button_label": "TRUNCATE LONG MOLECULE NAMES/IDs",
+                "window_name": "truncate_long_molecule_names",
+                "toolwindow_kwargs": {
+                    "tool_name": "Truncate Long Molecule Names/IDs",
+                    "tool_category": "misc",
+                    "tool_inputs": "truncate_long_molecule_names_inputs.txt",
+                    "path_to_code": "tools/misc/truncate_long_molecule_names.py"
+                }
+            },
+            {
+                "button_label": "SDF/MOL2 FILE SPLITTER",
+                "window_name": "sdf_mol2_file_splitter",
+                "toolwindow_kwargs": {
+                    "tool_name": "SDF/MOL2 File Splitter",
+                    "tool_category": "misc",
+                    "tool_inputs": "sdf_mol2_file_splitter_inputs.txt",
+                    "path_to_code": "tools/misc/sdf_mol2_file_splitter.py"
+                }
+            },
+            {
+                "button_label": "FILE MERGER: SDF/MOL2/SMI",
+                "window_name": "file_merger_sdf_mol2_smi",
+                "toolwindow_kwargs": {
+                    "tool_name": "File Merger: SDF/MOL2/SMI",
+                    "tool_category": "misc",
+                    "tool_inputs": "file_merger_sdf_mol2_smi_inputs.txt",
+                    "path_to_code": "tools/misc/file_merger_sdf_mol2_smi.py"
+                }
+            },
+            {
+                "button_label": "MOL2/SDF TO SMILES CONVERTER",
+                "window_name": "mol2_or_sdf_to_smiles_converter",
+                "toolwindow_kwargs": {
+                    "tool_name": "MOL2/SDF to SMILES Converter",
+                    "tool_category": "misc",
+                    "tool_inputs": "mol2_or_sdf_to_smiles_converter_inputs.txt",
+                    "path_to_code": "tools/misc/mol2_or_sdf_to_smiles_converter.py"
+                }
+            },
+            {
+                "button_label": "SDF DOCKING SCORE FILTER",
+                "window_name": "sdf_docking_score_filter",
+                "toolwindow_kwargs": {
+                    "tool_name": "SDF Docking Score Filter",
+                    "tool_category": "misc",
+                    "tool_inputs": "sdf_docking_score_filter_inputs.txt",
+                    "path_to_code": "tools/misc/sdf_docking_score_filter.py"
+                }
+            },
+            {
+                "button_label": "MOLECULE VIEWER AND MANUAL FILTERING",
+                "window_name": "molecule_viewer_and_manual_filtering",
+                "toolwindow_kwargs": {
+                    "tool_name": "Molecule Viewer and Manual Filtering",
+                    "tool_category": "misc",
+                    "tool_inputs": "molecule_viewer_and_manual_filtering_inputs.txt",
+                    "path_to_code": "tools/misc/molecule_viewer_and_manual_filtering.py"
+                }
+            },
+            {
+                "button_label": "SDF TO MOLECULE IMAGE GRID",
+                "window_name": "sdf_to_molecule_image_grid",
+                "toolwindow_kwargs": {
+                    "tool_name": "SDF to Molecule Image Grid",
+                    "tool_category": "misc",
+                    "tool_inputs": "sdf_to_molecule_image_grid_inputs.txt",
+                    "path_to_code": "tools/misc/sdf_to_molecule_image_grid.py"
+                }
+            },
+        ]
 
 
         # Create a container frame
         self.frames = {}
+
+
+        # 1. First, dynamically add each misc tool's ToolWindowPrototype frame
+        for tool in misc_tools:
+            self.frames[tool["window_name"]] = ToolWindowPrototype(
+                self, self.show_screen, **tool["toolwindow_kwargs"]
+            )
+
+        # 2. Now create the MiscellaneousWindow, passing the *whole* tool config list
+        self.frames["misc"] = MiscellaneousWindow(
+            self, self.show_screen, tool_configs=misc_tools
+        )
+
+        # 3. Keep the rest (pre_docking, post_docking, credits, etc.) as before:
         for class_name, name, kwargs in [
-            # Add more frames here as needed
             (HomeWindow, "home", {}),
-
-            (PreDockingWindow, "pre_docking", {"tool_list": self.pre_docking_button_texts, "max_tool_width": self.get_max_tool_width(self.pre_docking_button_texts)}),
-            (PostDockingWindow, "post_docking", {"tool_list": self.post_docking_button_texts, "max_tool_width": self.get_max_tool_width(self.post_docking_button_texts)}),
-            (MiscellaneousWindow, "misc", {"tool_list": self.misc_button_texts, "max_tool_width": self.get_max_tool_width(self.misc_button_texts)}),
-
+            (PreDockingWindow, "pre_docking", {"tool_list": self.pre_docking_button_texts,
+                                               "max_tool_width": self.get_max_tool_width(
+                                                   self.pre_docking_button_texts)}),
+            (PostDockingWindow, "post_docking", {"tool_list": self.post_docking_button_texts,
+                                                 "max_tool_width": self.get_max_tool_width(
+                                                     self.post_docking_button_texts)}),
             (CreditsWindow, "credits", {}),
-
-            # PRE-DOCKING TOOLS
-
-            # POST-DOCKING TOOLS
-            (ToolWindowPrototype, "residue_targeting",{"tool_name": "RESIDUE TARGETING", "tool_category": "post_docking", "tool_inputs": "residue_targeting_inputs.txt", "path_to_code": "tools/post_docking/residue_targeting.py"}),
-
-            # MISC TOOLS
-            (ToolWindowPrototype, "molecule_counter", {"tool_name": "Molecule Counter", "tool_category": "misc", "tool_inputs": "molecule_counter_inputs.txt", "path_to_code": "tools/misc/molecule_counter.py"}),
-            (ToolWindowPrototype, "truncate_long_molecule_names", {"tool_name": "Truncate Long Molecule Names/IDs", "tool_category": "misc", "tool_inputs": "truncate_long_molecule_names_inputs.txt", "path_to_code": "tools/misc/truncate_long_molecule_names.py"}),
-            (ToolWindowPrototype, "sdf_mol2_file_splitter", {"tool_name": "SDF/MOL2 File Splitter", "tool_category": "misc", "tool_inputs": "sdf_mol2_file_splitter_inputs.txt", "path_to_code": "tools/misc/sdf_mol2_file_splitter.py"}),
-            (ToolWindowPrototype, "file_merger_sdf_mol2_smi", {"tool_name": "File Merger: SDF/MOL2/SMI", "tool_category": "misc", "tool_inputs": "file_merger_sdf_mol2_smi_inputs.txt", "path_to_code": "tools/misc/file_merger_sdf_mol2_smi.py"}),
-            (ToolWindowPrototype, "smiles_to_sdf_converter", {"tool_name": "SMILES to SDF Converter", "tool_category": "misc", "tool_inputs": "smiles_to_sdf_converter_inputs.txt", "path_to_code": "tools/misc/smiles_to_sdf_converter.py"}),
-            (ToolWindowPrototype, "mol2_or_sdf_to_smiles_converter", {"tool_name": "MOL2/SDF to SMILES Converter", "tool_category": "misc", "tool_inputs": "mol2_or_sdf_to_smiles_converter_inputs.txt", "path_to_code": "tools/misc/mol2_or_sdf_to_smiles_converter.py"}),
-            (ToolWindowPrototype, "sdf_docking_score_filter", {"tool_name": "SDF Docking Score Filter", "tool_category": "misc", "tool_inputs": "sdf_docking_score_filter_inputs.txt", "path_to_code": "tools/misc/sdf_docking_score_filter.py"}),
-            (ToolWindowPrototype, "molecule_viewer_and_manual_filtering", {"tool_name": "Molecule Viewer and Manual Filtering", "tool_category": "misc", "tool_inputs": "molecule_viewer_and_manual_filtering_inputs.txt", "path_to_code": "tools/misc/molecule_viewer_and_manual_filtering.py"}),
-            (ToolWindowPrototype, "sdf_to_molecule_image_grid", {"tool_name": "SDF to Molecule Image Grid", "tool_category": "misc", "tool_inputs": "sdf_to_molecule_image_grid_inputs.txt", "path_to_code": "tools/misc/sdf_to_molecule_image_grid.py"}),
-
+            # etc. for other core windows
         ]:
+
             if kwargs:
                 frame = class_name(self, self.show_screen, **kwargs)
             else:
                 frame = class_name(self, self.show_screen)
             self.frames[name] = frame
             frame.place(relx=0, rely=0, relwidth=1, relheight=1)
-            frame.place_forget()  # Hides the frame until you show it
+            frame.place_forget() # Hides the frame until you show it
 
-            # replaced by the conditional statements above
-            # frame = class_name(self, self.show_screen)
+
         self.show_screen("home")  # Show this window by default
 
         # Menubar setup

@@ -225,6 +225,7 @@ namespace eval ttk::theme::forest-dark {
 
         # Button
         ttk::style configure TButton -padding {8 4 8 4} -width -10 -anchor center
+        ttk::style configure Accent.TButton -anchor center
 
         ttk::style element create Button.button image \
             [list $I(rect-basic) \
