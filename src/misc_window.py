@@ -3,6 +3,31 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 import customtkinter as ctk
 from textwrap import wrap
+import os
+# At top of misc_window.py / pre_docking_window.py / post_docking_window.py
+try:
+    from idlelib.tooltip import Hovertip  # stdlib tooltip
+except Exception:
+    Hovertip = None  # fallback if not available (rare)
+
+
+import os
+
+def read_tool_description(input_path: str) -> str | None:
+    # Reads first line like:  "# description: your text..."
+    if not input_path:
+        return None
+    for candidate in (input_path, os.path.join(os.getcwd(), input_path)):
+        if os.path.isfile(candidate):
+            try:
+                with open(candidate, "r", encoding="utf-8") as f:
+                    for line in f:
+                        s = line.strip()
+                        if s.lower().startswith("# description:"):
+                            return s.split(":", 1)[1].strip()
+            except Exception:
+                pass
+    return None
 
 
 class MiscellaneousWindow(tk.Frame):
@@ -70,6 +95,17 @@ class MiscellaneousWindow(tk.Frame):
                     width=18,  # Adjust width as needed to match post-docking
                     command=lambda wn=tool["window_name"]: show_screen_callback(wn),
                 )
+
+                # Decide tooltip text: prefer explicit config, else try the .txt header, else the tool name
+                tooltip_text = (
+                        tool.get("description")
+                        or read_tool_description(tool.get("toolwindow_kwargs", {}).get("tool_inputs"))
+                        or tool.get("toolwindow_kwargs", {}).get("tool_name")
+                        or tool.get("button_label")
+                )
+
+                if Hovertip and tooltip_text:
+                    Hovertip(btn, tooltip_text, hover_delay=500)
 
                 btn.grid(
                     row=row_start // buttons_per_row, column=col + 1,
