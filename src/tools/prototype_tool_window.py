@@ -117,12 +117,12 @@ class ToolWindowPrototype(tk.Frame):
         run_button = ttk.Button(code_frame, text="RUN", style="Accent.TButton", command=self.run)
         run_button.grid(row=1, column=0,columnspan=2, sticky="ew", ipadx=20, ipady=35, pady=(0, 10))
 
-        progress_var = tk.DoubleVar(value=0)
-        progress_bar = ttk.Progressbar(code_frame, variable=progress_var, maximum=100, mode="determinate")
-        progress_bar.grid(row=2, column=0, sticky="ew", pady=(15, 10))
+        self.progress_var = tk.DoubleVar(value=0)
+        self.progress_bar = ttk.Progressbar(code_frame, variable=self.progress_var, maximum=100, mode="determinate")
+        self.progress_bar.grid(row=2, column=0, sticky="ew", pady=(15, 10))
 
-        percent_lbl = ttk.Label(code_frame, text="0%")
-        percent_lbl.grid(row=2, column=1, sticky="ew", padx=(20, 0))
+        self.percent_lbl = ttk.Label(code_frame, text="0%")
+        self.percent_lbl.grid(row=2, column=1, sticky="ew", padx=(20, 0))
 
 
         # Frame for shell output

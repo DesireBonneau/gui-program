@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 # Importing custom window classes
 from home_window import HomeWindow
+from progress_patch import apply_patch
 from pre_docking_window import PreDockingWindow
 from post_docking_window import PostDockingWindow
 from misc_window import MiscellaneousWindow
@@ -201,21 +202,19 @@ class MainApp(tk.Tk):
 
         # 1. First, dynamically add each misc tool's ToolWindowPrototype frame
         for tool in misc_tools:
-            self.frames[tool["window_name"]] = ToolWindowPrototype(
-                self, self.show_screen, **tool["toolwindow_kwargs"]
-            )
+            tool_window = ToolWindowPrototype(self, self.show_screen, **tool["toolwindow_kwargs"])
+            self.frames[tool["window_name"]] = tool_window
 
         # Then the pre-docking tools
         for tool in pre_docking_tools:
-            self.frames[tool["window_name"]] = ToolWindowPrototype(
-                self, self.show_screen, **tool["toolwindow_kwargs"]
-                                                                   )
+            tool_window = ToolWindowPrototype(self, self.show_screen, **tool["toolwindow_kwargs"])
+            self.frames[tool["window_name"]] = tool_window
 
         # Then the post-docking tools
         for tool in post_docking_tools:
-            self.frames[tool["window_name"]] = ToolWindowPrototype(
-                self, self.show_screen, **tool["toolwindow_kwargs"]
-            )
+            tool_window = ToolWindowPrototype(self, self.show_screen, **tool["toolwindow_kwargs"])
+            self.frames[tool["window_name"]] = tool_window
+
 
         # 2. Now create the MiscellaneousWindow, passing the *whole* tool config list
         self.frames["misc"] = MiscellaneousWindow(
@@ -227,14 +226,12 @@ class MainApp(tk.Tk):
         self.frames["post_docking"] = PostDockingWindow(
             self, self.show_screen, tool_configs=post_docking_tools
         )
-
-        # 3. Keep the rest (pre_docking, post_docking, credits, etc.) as before:
+        # 3. Keep the rest (credits, etc.) as before:
         for class_name, name, kwargs in [
             (HomeWindow, "home", {}),
             (CreditsWindow, "credits", {}),
             # etc. for other core windows
         ]:
-
             if kwargs:
                 frame = class_name(self, self.show_screen, **kwargs)
             else:
@@ -306,6 +303,9 @@ class MainApp(tk.Tk):
         for fname, frame in self.frames.items():
             if fname == name:
                 frame.place(relx=0, rely=0, relwidth=1, relheight=1)
+                # Rebind tqdm to this frame’s progress bar if it has one
+                if hasattr(frame, "progress_bar"):
+                    apply_patch(frame.progress_bar)
             else:
                 frame.place_forget()
 
