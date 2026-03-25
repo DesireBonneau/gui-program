@@ -1,4 +1,4 @@
-# UI Program Platform
+# GUI Program Platform
 A desktop application designed to provide a unified, user-friendly graphical interface (GUI) for computational chemistry and cheminformatics tools.
 
 
