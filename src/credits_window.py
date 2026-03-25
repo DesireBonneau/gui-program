@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 
 
 class CreditsWindow(tk.Frame):
-    def __init__(self, parent, show_screen_callback):
+    def __init__(self, parent, show_screen_callback, all_tools=None):
         """
         This window is for displaying the credits of the program and the different tools.
 
@@ -14,14 +14,23 @@ class CreditsWindow(tk.Frame):
         super().__init__(parent)
         self.show_screen_callback = show_screen_callback
 
+        file_content = ""
         # Load the credits text from a file
         try:
             with open('data/texts/credits.txt', 'r', encoding='utf-8') as file:
                 file_content = file.read()
         except FileNotFoundError:
-            print("Error: The file 'your_file.txt' was not found.")
+            file_content = "Error: The file 'credits.txt' was not found.\n"
         except Exception as e:
-            print(f"An error occurred: {e}")
+            file_content = f"An error occurred: {e}\n"
+
+        if all_tools:
+            file_content += "\n\n" + ("=" * 40) + "\nINDIVIDUAL TOOL CREDITS\n" + ("=" * 40) + "\n\n"
+            for tool in all_tools:
+                credits_text = tool.get("credits")
+                if credits_text:
+                    file_content += f"[{tool.get('button_label', 'Unnamed Tool')}]\n"
+                    file_content += f"{credits_text}\n\n"
 
         # Load the home image
         house_image = Image.open("data/images/house_icon.png").resize((32, 34))

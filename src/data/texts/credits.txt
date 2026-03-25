@@ -1,9 +1,11 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta lorem ut tellus malesuada condimentum. Proin bibendum lectus sit amet libero luctus, ac dapibus ipsum tempor. Mauris et accumsan leo. Pellentesque ullamcorper nulla in lacus aliquam consectetur. Ut aliquet imperdiet sem consequat porttitor. Ut elementum purus sit amet viverra consequat. Suspendisse quis tellus mi. Mauris consectetur vitae felis et placerat. Nulla sodales aliquet turpis, non pharetra tortor cursus eu.
+========================================
+PROJECT CREDITS
+========================================
 
-Aenean lobortis felis turpis, vel tincidunt nulla suscipit a. Integer feugiat, dolor non tristique mollis, tortor metus fringilla libero, vitae sollicitudin ante felis et massa. Quisque sagittis venenatis eros ut elementum. Praesent nisi risus, pretium et tortor ac, pretium cursus velit. Ut accumsan enim mi, sit amet sollicitudin metus ultrices et. Nam rhoncus orci id mauris porttitor, eget lacinia nisi elementum. Nam nec sagittis augue, a tincidunt metus. Nulla facilisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc interdum dignissim molestie.
+MOITESSIER RESEARCH GROUP
 
-Suspendisse commodo tellus eget elit rutrum ornare. Integer hendrerit faucibus auctor. Phasellus magna sapien, varius vitae vestibulum ut, aliquam et sapien. In malesuada mi augue, vel hendrerit enim placerat ut. Etiam libero ante, suscipit sed malesuada vel, pulvinar vitae eros. Nunc tempor erat ac quam vestibulum, in viverra est lobortis. Pellentesque id sem mattis, feugiat ipsum sed, tincidunt ante.
+Concept and Idea Generation:
+Adam Dufour
 
-Aliquam accumsan at diam ut venenatis. Vestibulum luctus volutpat ex, nec semper urna placerat quis. Vestibulum a libero vehicula, vulputate sapien vel, congue augue. In faucibus at nisi id scelerisque. Mauris vulputate at turpis sit amet condimentum. Ut vitae metus non neque imperdiet elementum cursus ac neque. Sed dignissim arcu orci, eget gravida ante fermentum quis. Nullam at justo sit amet nulla iaculis condimentum. Quisque sem libero, commodo vitae blandit nec, vestibulum at risus. Aenean lorem elit, vestibulum sit amet eros a, eleifend suscipit arcu. In et sagittis erat, id condimentum felis. Fusce non mi tempus, interdum dolor eget, semper massa. Quisque in dolor nec tortor finibus sollicitudin. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum efficitur aliquet maximus. Sed ornare erat turpis, vel finibus libero semper ut.
-
-Aliquam volutpat consectetur diam quis hendrerit. Maecenas molestie commodo erat non consequat. Fusce interdum rhoncus eros vitae mattis. Donec et purus et est ultricies congue eget vel libero. Donec quis ante felis. Aenean lacinia vitae velit vitae aliquam. Sed nec risus a nunc fermentum malesuada feugiat vel lacus. Ut nec sagittis magna. Etiam ipsum quam, ultrices vel nulla vel, consectetur venenatis ipsum. Duis dictum dolor auctor lectus accumsan, at aliquet augue pharetra.
+Developer / Implementation:
+Justin Bonneau-Diesce

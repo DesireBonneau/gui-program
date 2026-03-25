@@ -1,8 +1,13 @@
+import os
+# Ensure the working directory is always the 'src' folder
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 # Importing necessary libraries
 import tkinter as tk
 from tkinter import ttk
 # Importing custom window classes
 from home_window import HomeWindow
+from progress_patch import apply_patch
 from pre_docking_window import PreDockingWindow
 from post_docking_window import PostDockingWindow
 from misc_window import MiscellaneousWindow
@@ -33,83 +38,217 @@ class MainApp(tk.Tk):
         # To change the font size of the TLabelframe.Label
         style = ttk.Style()
         style.configure("TLabelframe.Label", font=("Helvetica Black", 10, "bold"))
+        style.configure("Accent.TButton", anchor="center")
 
         # Window configuration
         self.title("Program")
         self.geometry("1200x800")
 
-        # ADD THE TOOL NAMES (FOR PRE/POST-DOCKING/MISC WINDOWS) HERE
-        self.pre_docking_button_texts = self.wrap_and_pad_tool_names([
-            "",
-            "TOOL 1",               # index=1
-            "TOOL 2",               # index=2
-            "TOOL 3",               # index=3
-            "TOOL 4",               # index=4
-            "TOOL 5",               # index=5
-            "TOOL 6",               # index=6
-            "TOOL 7",               # index=7
-            "TOOL 8",               # index=8
-            "TOOL 9",               # index=9
-            "TOOL 10",              # index=10
-            "TOOL 11",              # index=11
-            "TOOL 12",              # index=12
-        ])
+        # Tool button texts
+        pre_docking_tools = [
+            {
+                "button_label": "TRY 1",
+                "window_name": "try_1",
+                "toolwindow_kwargs": {
+                    "tool_name": "Not sure",
+                    "tool_category": "pre_docking",
+                    "tool_inputs": "try1_inputs.txt",
+                    "path_to_code": "tools/pre_docking/try1.py"
+                },
+                "description": "Prototype pre-docking step (placeholder).",
+                "credits": "..."
+            },
+            {
+                "button_label": "TRY 2",
+                "window_name": "try_2",
+                "toolwindow_kwargs": {
+                    "tool_name": "Not quite sure",
+                    "tool_category": "pre_docking",
+                    "tool_inputs": "try2_inputs.txt",
+                    "path_to_code": "tools/pre_docking/try2.py"
+                },
+                "description": "Prototype pre-docking step (placeholder).",
+                "credits": "..."
+            },
+            {
+                "button_label": "TRY 3",
+                "window_name": "try_3",
+                "toolwindow_kwargs": {
+                    "tool_name": "Not quite sure again",
+                    "tool_category": "pre_docking",
+                    "tool_inputs": "try3_inputs.txt",
+                    "path_to_code": "tools/pre_docking/try3.py"
+                },
+                "description": "Prototype pre-docking step (placeholder).",
+                "credits": "..."
+            },
+            # ... more tools
+        ]
 
-        self.post_docking_button_texts = self.wrap_and_pad_tool_names([
-            "",
-            "RESIDUE TARGETING",    # index=1
-            "TOOL 2",               # index=2
-            "TOOL 3",               # index=3
-            "TOOL 4",               # index=4
-            "TOOL 5",               # index=5
-            "TOOL 6",               # index=6
-            "TOOL 7",               # index=7
-            "TOOL 8",               # index=8
-            "TOOL 9",               # index=9
-        ])
+        post_docking_tools = [
+            {
+                "button_label": "GLOBAL COUNTER",
+                "window_name": "global_counter",
+                "toolwindow_kwargs": {
+                    "tool_name": "Global Counter",
+                    "tool_category": "post_docking",
+                    "tool_inputs": "global_counter_inputs.txt",
+                    "path_to_code": "tools/post_docking/global_counter.py"
+                },
+                "description": "Compute global stats over docking results: ligands, poses, and score distributions; quick sanity checks at a glance.",
+                "credits": "..."
+            },
+            {
+                "button_label": "RESIDUE TARGETING",
+                "window_name": "residue_targeting",
+                "toolwindow_kwargs": {
+                    "tool_name": "Residue Targeting",
+                    "tool_category": "post_docking",
+                    "tool_inputs": "residue_targeting_inputs.txt",
+                    "path_to_code": "tools/post_docking/residue_targeting.py"
+                },
+                "description": "Analyze pose–residue contacts/clashes vs a target residue set; flag ligands that best engage specified residues.",
+                "credits": "..."
+            },
+            # ... more tools
+        ]
 
-        self.misc_button_texts = self.wrap_and_pad_tool_names([
-            "",
-            "MOLECULE COUNTER",                     # index=1
-            "TRUNCATE LONG MOLECULE NAMES/IDs",     # index=2
-            "SDF/MOL2 FILE SPLITTER",               # index=3
-            "FILE MERGER: SDF/MOL2/SMI",            # index=4
-            "SMILES TO SDF CONVERTER",              # index=5
-            "MOL2/SDF TO SMILES CONVERTER",         # index=6
-            "SDF DOCKING SCORE FILTER",             # index=7
-            "MOLECULE VIEWER AND MANUAL FILTERING", # index=8
-            "SDF TO MOLECULE IMAGE GRID",           # index=9
-        ])
+        misc_tools = [
+            {
+                "button_label": "MOLECULE COUNTER",
+                "window_name": "molecule_counter",
+                "toolwindow_kwargs": {
+                    "tool_name": "Molecule Counter",
+                    "tool_category": "misc",
+                    "tool_inputs": "molecule_counter_inputs.txt",
+                    "path_to_code": "tools/misc/molecule_counter.py"
+                },
+                "description": "Count molecules across SDF/MOL2/SMI files (optionally per-file and unique IDs); outputs a tidy summary for quick QC",
+                "credits": "..."
+            },
+            {
+                "button_label": "TRUNCATE LONG MOLECULE NAMES/IDs",
+                "window_name": "truncate_long_molecule_names",
+                "toolwindow_kwargs": {
+                    "tool_name": "Truncate Long Molecule Names/IDs",
+                    "tool_category": "misc",
+                    "tool_inputs": "truncate_long_molecule_names_inputs.txt",
+                    "path_to_code": "tools/misc/truncate_long_molecule_names.py"
+                },
+                "description": "Shorten over-long names/IDs to a safe length for downstream tools and UIs while keeping an unmangled copy in a new field.",
+                "credits": "..."
+            },
+            {
+                "button_label": "SDF/MOL2 FILE SPLITTER",
+                "window_name": "sdf_mol2_file_splitter",
+                "toolwindow_kwargs": {
+                    "tool_name": "SDF/MOL2 File Splitter",
+                    "tool_category": "misc",
+                    "tool_inputs": "sdf_mol2_file_splitter_inputs.txt",
+                    "path_to_code": "tools/misc/sdf_mol2_file_splitter.py"
+                },
+                "description": "Split a large SDF/MOL2 into evenly sized chunks (N molecules per file) for parallel docking or easier review.",
+                "credits": "..."
+            },
+            {
+                "button_label": "FILE MERGER: SDF/MOL2/SMI",
+                "window_name": "file_merger_sdf_mol2_smi",
+                "toolwindow_kwargs": {
+                    "tool_name": "File Merger: SDF/MOL2/SMI",
+                    "tool_category": "misc",
+                    "tool_inputs": "file_merger_sdf_mol2_smi_inputs.txt",
+                    "path_to_code": "tools/misc/file_merger_sdf_mol2_smi.py"
+                },
+                "description": "Merge multiple SDF/MOL2/SMI files into one, optionally deduplicating by ID or canonical SMILES and preserving fields.",
+                "credits": "..."
+            },
+            {
+                "button_label": "MOL2/SDF TO SMILES CONVERTER",
+                "window_name": "mol2_or_sdf_to_smiles_converter",
+                "toolwindow_kwargs": {
+                    "tool_name": "MOL2/SDF to SMILES Converter",
+                    "tool_category": "misc",
+                    "tool_inputs": "mol2_or_sdf_to_smiles_converter_inputs.txt",
+                    "path_to_code": "tools/misc/mol2_or_sdf_to_smiles_converter.py"
+                },
+                "description": "Extract canonical SMILES (and InChIKey) from MOL2/SDF; writes SMI/CSV for modeling or curation.",
+                "credits": "..."
+            },
+            {
+                "button_label": "SDF DOCKING SCORE FILTER",
+                "window_name": "sdf_docking_score_filter",
+                "toolwindow_kwargs": {
+                    "tool_name": "SDF Docking Score Filter",
+                    "tool_category": "misc",
+                    "tool_inputs": "sdf_docking_score_filter_inputs.txt",
+                    "path_to_code": "tools/misc/sdf_docking_score_filter.py"
+                },
+                "description": "Keep only top-N or thresholded poses based on a chosen score tag (e.g., Vina/Glide score); outputs filtered SDF+CSV.",
+                "credits": "..."
+            },
+            {
+                "button_label": "MOLECULE VIEWER AND MANUAL FILTERING",
+                "window_name": "molecule_viewer_and_manual_filtering",
+                "toolwindow_kwargs": {
+                    "tool_name": "Molecule Viewer and Manual Filtering",
+                    "tool_category": "misc",
+                    "tool_inputs": "molecule_viewer_and_manual_filtering_inputs.txt",
+                    "path_to_code": "tools/misc/molecule_viewer_and_manual_filtering.py"
+                },
+                "description": "Review structures and metadata, mark keep/remove by hand, and export selections for downstream steps.",
+                "credits": "..."
+            },
+            {
+                "button_label": "SDF TO MOLECULE IMAGE GRID",
+                "window_name": "sdf_to_molecule_image_grid",
+                "toolwindow_kwargs": {
+                    "tool_name": "SDF to Molecule Image Grid",
+                    "tool_category": "misc",
+                    "tool_inputs": "sdf_to_molecule_image_grid_inputs.txt",
+                    "path_to_code": "tools/misc/sdf_to_molecule_image_grid.py"
+                },
+                "description": "Render 2D depictions into a printable image grid (PNG/SVG), optionally annotated with name/score/ID.",
+                "credits": "..."
+            },
+        ]
 
 
         # Create a container frame
         self.frames = {}
+
+
+        # 1. First, dynamically add each misc tool's ToolWindowPrototype frame
+        for tool in misc_tools:
+            tool_window = ToolWindowPrototype(self, self.show_screen, **tool["toolwindow_kwargs"])
+            self.frames[tool["window_name"]] = tool_window
+
+        # Then the pre-docking tools
+        for tool in pre_docking_tools:
+            tool_window = ToolWindowPrototype(self, self.show_screen, **tool["toolwindow_kwargs"])
+            self.frames[tool["window_name"]] = tool_window
+
+        # Then the post-docking tools
+        for tool in post_docking_tools:
+            tool_window = ToolWindowPrototype(self, self.show_screen, **tool["toolwindow_kwargs"])
+            self.frames[tool["window_name"]] = tool_window
+
+
+        # 2. Now create the MiscellaneousWindow, passing the *whole* tool config list
+        self.frames["misc"] = MiscellaneousWindow(
+            self, self.show_screen, tool_configs=misc_tools
+        )
+        self.frames["pre_docking"] = PreDockingWindow(
+            self, self.show_screen, tool_configs=pre_docking_tools
+        )
+        self.frames["post_docking"] = PostDockingWindow(
+            self, self.show_screen, tool_configs=post_docking_tools
+        )
+        all_tools = pre_docking_tools + post_docking_tools + misc_tools
+        # 3. Keep the rest (credits, etc.) as before:
         for class_name, name, kwargs in [
-            # Add more frames here as needed
             (HomeWindow, "home", {}),
-
-            (PreDockingWindow, "pre_docking", {"tool_list": self.pre_docking_button_texts, "max_tool_width": self.get_max_tool_width(self.pre_docking_button_texts)}),
-            (PostDockingWindow, "post_docking", {"tool_list": self.post_docking_button_texts, "max_tool_width": self.get_max_tool_width(self.post_docking_button_texts)}),
-            (MiscellaneousWindow, "misc", {"tool_list": self.misc_button_texts, "max_tool_width": self.get_max_tool_width(self.misc_button_texts)}),
-
-            (CreditsWindow, "credits", {}),
-
-            # PRE-DOCKING TOOLS
-
-            # POST-DOCKING TOOLS
-            (ToolWindowPrototype, "residue_targeting",{"tool_name": "RESIDUE TARGETING", "tool_category": "post_docking", "tool_inputs": "residue_targeting_inputs.txt", "path_to_code": "tools/post_docking/residue_targeting.py"}),
-
-            # MISC TOOLS
-            (ToolWindowPrototype, "molecule_counter", {"tool_name": "Molecule Counter", "tool_category": "misc", "tool_inputs": "molecule_counter_inputs.txt", "path_to_code": "tools/misc/molecule_counter.py"}),
-            (ToolWindowPrototype, "truncate_long_molecule_names", {"tool_name": "Truncate Long Molecule Names/IDs", "tool_category": "misc", "tool_inputs": "truncate_long_molecule_names_inputs.txt", "path_to_code": "tools/misc/truncate_long_molecule_names.py"}),
-            (ToolWindowPrototype, "sdf_mol2_file_splitter", {"tool_name": "SDF/MOL2 File Splitter", "tool_category": "misc", "tool_inputs": "sdf_mol2_file_splitter_inputs.txt", "path_to_code": "tools/misc/sdf_mol2_file_splitter.py"}),
-            (ToolWindowPrototype, "file_merger_sdf_mol2_smi", {"tool_name": "File Merger: SDF/MOL2/SMI", "tool_category": "misc", "tool_inputs": "file_merger_sdf_mol2_smi_inputs.txt", "path_to_code": "tools/misc/file_merger_sdf_mol2_smi.py"}),
-            (ToolWindowPrototype, "smiles_to_sdf_converter", {"tool_name": "SMILES to SDF Converter", "tool_category": "misc", "tool_inputs": "smiles_to_sdf_converter_inputs.txt", "path_to_code": "tools/misc/smiles_to_sdf_converter.py"}),
-            (ToolWindowPrototype, "mol2_or_sdf_to_smiles_converter", {"tool_name": "MOL2/SDF to SMILES Converter", "tool_category": "misc", "tool_inputs": "mol2_or_sdf_to_smiles_converter_inputs.txt", "path_to_code": "tools/misc/mol2_or_sdf_to_smiles_converter.py"}),
-            (ToolWindowPrototype, "sdf_docking_score_filter", {"tool_name": "SDF Docking Score Filter", "tool_category": "misc", "tool_inputs": "sdf_docking_score_filter_inputs.txt", "path_to_code": "tools/misc/sdf_docking_score_filter.py"}),
-            (ToolWindowPrototype, "molecule_viewer_and_manual_filtering", {"tool_name": "Molecule Viewer and Manual Filtering", "tool_category": "misc", "tool_inputs": "molecule_viewer_and_manual_filtering_inputs.txt", "path_to_code": "tools/misc/molecule_viewer_and_manual_filtering.py"}),
-            (ToolWindowPrototype, "sdf_to_molecule_image_grid", {"tool_name": "SDF to Molecule Image Grid", "tool_category": "misc", "tool_inputs": "sdf_to_molecule_image_grid_inputs.txt", "path_to_code": "tools/misc/sdf_to_molecule_image_grid.py"}),
-
+            (CreditsWindow, "credits", {"all_tools": all_tools}),
+            # etc. for other core windows
         ]:
             if kwargs:
                 frame = class_name(self, self.show_screen, **kwargs)
@@ -117,10 +256,9 @@ class MainApp(tk.Tk):
                 frame = class_name(self, self.show_screen)
             self.frames[name] = frame
             frame.place(relx=0, rely=0, relwidth=1, relheight=1)
-            frame.place_forget()  # Hides the frame until you show it
+            frame.place_forget() # Hides the frame until you show it
 
-            # replaced by the conditional statements above
-            # frame = class_name(self, self.show_screen)
+
         self.show_screen("home")  # Show this window by default
 
         # Menubar setup
@@ -183,6 +321,9 @@ class MainApp(tk.Tk):
         for fname, frame in self.frames.items():
             if fname == name:
                 frame.place(relx=0, rely=0, relwidth=1, relheight=1)
+                # Rebind tqdm to this frame’s progress bar if it has one
+                if hasattr(frame, "progress_bar"):
+                    apply_patch(frame.progress_bar)
             else:
                 frame.place_forget()
 
