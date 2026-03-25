@@ -1,0 +1,7 @@
+pillow
+customtkinter
+rdkit
+matplotlib
+pandas
+numpy
+tqdm

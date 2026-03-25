@@ -1,0 +1,15 @@
+name: ui-program-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.8
+  - pillow
+  - rdkit
+  - matplotlib
+  - pandas
+  - numpy
+  - tqdm
+  - pip
+  - pip:
+    - customtkinter

@@ -1,3 +1,7 @@
+import os
+# Ensure the working directory is always the 'src' folder
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 # Importing necessary libraries
 import tkinter as tk
 from tkinter import ttk
@@ -51,7 +55,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "try1_inputs.txt",
                     "path_to_code": "tools/pre_docking/try1.py"
                 },
-                "description": "Prototype pre-docking step (placeholder)."
+                "description": "Prototype pre-docking step (placeholder).",
+                "credits": "..."
             },
             {
                 "button_label": "TRY 2",
@@ -62,7 +67,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "try2_inputs.txt",
                     "path_to_code": "tools/pre_docking/try2.py"
                 },
-                "description": "Prototype pre-docking step (placeholder)."
+                "description": "Prototype pre-docking step (placeholder).",
+                "credits": "..."
             },
             {
                 "button_label": "TRY 3",
@@ -73,7 +79,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "try3_inputs.txt",
                     "path_to_code": "tools/pre_docking/try3.py"
                 },
-                "description": "Prototype pre-docking step (placeholder)."
+                "description": "Prototype pre-docking step (placeholder).",
+                "credits": "..."
             },
             # ... more tools
         ]
@@ -88,7 +95,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "global_counter_inputs.txt",
                     "path_to_code": "tools/post_docking/global_counter.py"
                 },
-                "description": "Compute global stats over docking results: ligands, poses, and score distributions; quick sanity checks at a glance."
+                "description": "Compute global stats over docking results: ligands, poses, and score distributions; quick sanity checks at a glance.",
+                "credits": "..."
             },
             {
                 "button_label": "RESIDUE TARGETING",
@@ -99,7 +107,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "residue_targeting_inputs.txt",
                     "path_to_code": "tools/post_docking/residue_targeting.py"
                 },
-                "description": "Analyze pose–residue contacts/clashes vs a target residue set; flag ligands that best engage specified residues."
+                "description": "Analyze pose–residue contacts/clashes vs a target residue set; flag ligands that best engage specified residues.",
+                "credits": "..."
             },
             # ... more tools
         ]
@@ -114,7 +123,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "molecule_counter_inputs.txt",
                     "path_to_code": "tools/misc/molecule_counter.py"
                 },
-                "description": "Count molecules across SDF/MOL2/SMI files (optionally per-file and unique IDs); outputs a tidy summary for quick QC"
+                "description": "Count molecules across SDF/MOL2/SMI files (optionally per-file and unique IDs); outputs a tidy summary for quick QC",
+                "credits": "..."
             },
             {
                 "button_label": "TRUNCATE LONG MOLECULE NAMES/IDs",
@@ -125,7 +135,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "truncate_long_molecule_names_inputs.txt",
                     "path_to_code": "tools/misc/truncate_long_molecule_names.py"
                 },
-                "description": "Shorten over-long names/IDs to a safe length for downstream tools and UIs while keeping an unmangled copy in a new field."
+                "description": "Shorten over-long names/IDs to a safe length for downstream tools and UIs while keeping an unmangled copy in a new field.",
+                "credits": "..."
             },
             {
                 "button_label": "SDF/MOL2 FILE SPLITTER",
@@ -136,7 +147,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "sdf_mol2_file_splitter_inputs.txt",
                     "path_to_code": "tools/misc/sdf_mol2_file_splitter.py"
                 },
-                "description": "Split a large SDF/MOL2 into evenly sized chunks (N molecules per file) for parallel docking or easier review."
+                "description": "Split a large SDF/MOL2 into evenly sized chunks (N molecules per file) for parallel docking or easier review.",
+                "credits": "..."
             },
             {
                 "button_label": "FILE MERGER: SDF/MOL2/SMI",
@@ -147,7 +159,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "file_merger_sdf_mol2_smi_inputs.txt",
                     "path_to_code": "tools/misc/file_merger_sdf_mol2_smi.py"
                 },
-                "description": "Merge multiple SDF/MOL2/SMI files into one, optionally deduplicating by ID or canonical SMILES and preserving fields."
+                "description": "Merge multiple SDF/MOL2/SMI files into one, optionally deduplicating by ID or canonical SMILES and preserving fields.",
+                "credits": "..."
             },
             {
                 "button_label": "MOL2/SDF TO SMILES CONVERTER",
@@ -158,7 +171,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "mol2_or_sdf_to_smiles_converter_inputs.txt",
                     "path_to_code": "tools/misc/mol2_or_sdf_to_smiles_converter.py"
                 },
-                "description": "Extract canonical SMILES (and InChIKey) from MOL2/SDF; writes SMI/CSV for modeling or curation."
+                "description": "Extract canonical SMILES (and InChIKey) from MOL2/SDF; writes SMI/CSV for modeling or curation.",
+                "credits": "..."
             },
             {
                 "button_label": "SDF DOCKING SCORE FILTER",
@@ -169,7 +183,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "sdf_docking_score_filter_inputs.txt",
                     "path_to_code": "tools/misc/sdf_docking_score_filter.py"
                 },
-                "description": "Keep only top-N or thresholded poses based on a chosen score tag (e.g., Vina/Glide score); outputs filtered SDF+CSV."
+                "description": "Keep only top-N or thresholded poses based on a chosen score tag (e.g., Vina/Glide score); outputs filtered SDF+CSV.",
+                "credits": "..."
             },
             {
                 "button_label": "MOLECULE VIEWER AND MANUAL FILTERING",
@@ -180,7 +195,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "molecule_viewer_and_manual_filtering_inputs.txt",
                     "path_to_code": "tools/misc/molecule_viewer_and_manual_filtering.py"
                 },
-                "description": "Review structures and metadata, mark keep/remove by hand, and export selections for downstream steps."
+                "description": "Review structures and metadata, mark keep/remove by hand, and export selections for downstream steps.",
+                "credits": "..."
             },
             {
                 "button_label": "SDF TO MOLECULE IMAGE GRID",
@@ -191,7 +207,8 @@ class MainApp(tk.Tk):
                     "tool_inputs": "sdf_to_molecule_image_grid_inputs.txt",
                     "path_to_code": "tools/misc/sdf_to_molecule_image_grid.py"
                 },
-                "description": "Render 2D depictions into a printable image grid (PNG/SVG), optionally annotated with name/score/ID."
+                "description": "Render 2D depictions into a printable image grid (PNG/SVG), optionally annotated with name/score/ID.",
+                "credits": "..."
             },
         ]
 
@@ -226,10 +243,11 @@ class MainApp(tk.Tk):
         self.frames["post_docking"] = PostDockingWindow(
             self, self.show_screen, tool_configs=post_docking_tools
         )
+        all_tools = pre_docking_tools + post_docking_tools + misc_tools
         # 3. Keep the rest (credits, etc.) as before:
         for class_name, name, kwargs in [
             (HomeWindow, "home", {}),
-            (CreditsWindow, "credits", {}),
+            (CreditsWindow, "credits", {"all_tools": all_tools}),
             # etc. for other core windows
         ]:
             if kwargs:
