@@ -42,7 +42,7 @@ class CreditsWindow(tk.Frame):
         # Labels
         label_lab = ttk.Label(self, text="MOITESSIER LABORATORY\nMCGILL UNIVERSITY",
                               font=("Helvetica Black", 12, "bold"), justify="right")
-        label_app_name = ttk.Label(self, text="PROGRAM", font=("Helvetica Black", 12, "bold"))
+        label_app_name = ttk.Label(self, text="GATE", font=("Helvetica Black", 12, "bold"))
         label_credits = ttk.Label(self, text="CREDITS", font=("Helvetica Back", 35, "bold"))
 
         # Credits textbox

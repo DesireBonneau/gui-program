@@ -5,6 +5,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # Importing necessary libraries
 import tkinter as tk
 from tkinter import ttk
+import webbrowser
 # Importing custom window classes
 from home_window import HomeWindow
 from progress_patch import apply_patch
@@ -40,8 +41,12 @@ class MainApp(tk.Tk):
         style.configure("TLabelframe.Label", font=("Helvetica Black", 10, "bold"))
         style.configure("Accent.TButton", anchor="center")
 
+        self.current_theme = "light"
+        self.history = []
+        self.current_screen = None
+
         # Window configuration
-        self.title("Program")
+        self.title("GATE")
         self.geometry("1200x800")
 
         # Tool button texts
@@ -262,62 +267,59 @@ class MainApp(tk.Tk):
         self.show_screen("home")  # Show this window by default
 
         # Menubar setup
-        # CHANGE THE DESIGN OF THE MENUBAR
         self.menubar = tk.Menu(self)
 
         # Create the File menu
         self.file_menu = tk.Menu(self.menubar, tearoff=0)
-        # Perhaps edit the name of the new file option
-        self.file_menu.add_command(label="New File")
-        self.file_menu.add_command(label="Previous Page")
-        self.file_menu.add_separator()
-        self.file_menu.add_command(label="Settings")
+        self.file_menu.add_command(label="Previous Page", command=self.previous_page)
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", command=self.quit)
-        # Add this sub-menu to the menubar
         self.menubar.add_cascade(label="File", menu=self.file_menu)
 
-        # Create the Edit menu
+        # Create the Edit menu (Ctrl+Z natively handles Undo)
         self.edit_menu = tk.Menu(self.menubar, tearoff=0)
-        self.edit_menu.add_command(label="Undo")
-        self.edit_menu.add_command(label="Redo")
-        self.edit_menu.add_separator()
-        self.edit_menu.add_command(label="Cut")
-        self.edit_menu.add_command(label="Copy")
-        self.edit_menu.add_command(label="Paste")
-        self.edit_menu.add_command(label="Select All")
-        # Add this sub-menu to the menubar
+        
+        def safe_event(event_name):
+            focused = self.focus_get()
+            if focused:
+                try:
+                    focused.event_generate(event_name)
+                except tk.TclError:
+                    pass
+        
+        self.edit_menu.add_command(label="Select All", command=lambda: safe_event("<<SelectAll>>"))
+        self.edit_menu.add_command(label="Cut", command=lambda: safe_event("<<Cut>>"))
+        self.edit_menu.add_command(label="Copy", command=lambda: safe_event("<<Copy>>"))
+        self.edit_menu.add_command(label="Paste", command=lambda: safe_event("<<Paste>>"))
         self.menubar.add_cascade(label="Edit", menu=self.edit_menu)
 
         # Create the View menu
         self.view_menu = tk.Menu(self.menubar, tearoff=0)
-        self.view_menu.add_command(label="Appearance")
-        self.view_menu.add_command(label="Fullscreen")
-        # Add this sub-menu to the menubar
+        self.view_menu.add_command(label="Toggle Appearance (Light/Dark)", command=self.toggle_appearance)
+        self.view_menu.add_command(label="Toggle Fullscreen", command=lambda: self.attributes("-fullscreen", not self.attributes("-fullscreen")))
         self.menubar.add_cascade(label="View", menu=self.view_menu)
-
-        # Create the Default menu
-        self.default_menu = tk.Menu(self.menubar, tearoff=0)
-        self.default_menu.add_command(label="Default setting for ...")
-        self.default_menu.add_command(label="Default setting for ...")
-        self.default_menu.add_command(label="Default setting for ...")
-        # Add this sub-menu to the menubar
-        self.menubar.add_cascade(label="Default", menu=self.default_menu)
 
         # Create the Help menu
         self.help_menu = tk.Menu(self.menubar, tearoff=0)
-        self.help_menu.add_command(label="About")
+        self.help_menu.add_command(label="About", command=lambda: self.show_screen("credits"))
         self.help_menu.add_separator()
-        self.help_menu.add_command(label="Getting Started")
+        self.help_menu.add_command(label="Getting Started", command=self.open_help_url)
         self.help_menu.add_separator()
-        self.help_menu.add_command(label="Contact")
-        # Add this sub-menu to the menubar
+        self.help_menu.add_command(label="Contact", command=self.open_contact_email)
         self.menubar.add_cascade(label="Help", menu=self.help_menu)
 
         self.config(menu=self.menubar)
 
 
-    def show_screen(self, name):
+    def show_screen(self, name, record_history=True):
+        if record_history:
+            if hasattr(self, 'current_screen') and self.current_screen and self.current_screen != name:
+                self.history.append(self.current_screen)
+                if len(self.history) > 3:  # Save the last 3 windows
+                    self.history.pop(0)
+
+        self.current_screen = name
+
         for fname, frame in self.frames.items():
             if fname == name:
                 frame.place(relx=0, rely=0, relwidth=1, relheight=1)
@@ -327,6 +329,62 @@ class MainApp(tk.Tk):
             else:
                 frame.place_forget()
 
+    def previous_page(self):
+        if self.history:
+            prev_screen = self.history.pop()
+            self.show_screen(prev_screen, record_history=False)
+
+    def toggle_appearance(self):
+        if self.current_theme == "light":
+            try:
+                self.tk.call('source', "tkinter_theme/forest-dark.tcl")
+            except tk.TclError:
+                pass
+            ttk.Style().theme_use('forest-dark')
+            self.current_theme = "dark"
+            bg_color = "#313131"
+            fg_color = "#ffffff"
+        else:
+            try:
+                self.tk.call('source', "tkinter_theme/forest-light.tcl")
+            except tk.TclError:
+                pass
+            ttk.Style().theme_use('forest-light')
+            self.current_theme = "light"
+            bg_color = "#ffffff"
+            fg_color = "#313131"
+            
+        # Standard tk widgets (like tk.Frame and tk.Tk) do not automatically inherit ttk theme changes 
+        # after they are created. We must manually push the new background colors down the widget tree.
+        def update_tk_widgets(widget):
+            if 'ttk' not in type(widget).__module__ and 'customtkinter' not in type(widget).__module__:
+                try:
+                    if 'bg' in widget.keys():
+                        widget.configure(bg=bg_color)
+                    if 'fg' in widget.keys():
+                        widget.configure(fg=fg_color)
+                except Exception:
+                    pass
+            for child in widget.winfo_children():
+                update_tk_widgets(child)
+
+        update_tk_widgets(self)
+        
+        # Sync CustomTkinter's appearance mode if it is being used anywhere
+        try:
+            import customtkinter as ctk
+            if self.current_theme == "dark":
+                ctk.set_appearance_mode("dark")
+            else:
+                ctk.set_appearance_mode("light")
+        except ImportError:
+            pass
+
+    def open_help_url(self):
+        webbrowser.open("https://github.com/DesireBonneau/ui-program")
+
+    def open_contact_email(self):
+        webbrowser.open("mailto:adam.dufour@mcgill.ca?subject=UI%20Program%20Inquiry")
 
     def get_pre_docking_tool_list(self):
         """

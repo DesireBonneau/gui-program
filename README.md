@@ -76,6 +76,11 @@ python main.py
 
 
 
+## Distributing the Application
+To learn how to compile this project into a standalone `.exe` file for non-programmers, or to understand how updates are published and distributed to end-users, please read [DISTRIBUTION.md](DISTRIBUTION.md).
+
+
+
 ## Requirements
 The project relies on a few external libraries for its UI and backend tools:
 - `customtkinter` and `pillow` (for the UI)
