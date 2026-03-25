@@ -41,7 +41,7 @@ class ToolWindowPrototype(tk.Frame):
         home_button = tk.Button(self, image=self.house_img, command=lambda: show_screen_callback("home"), borderwidth=4, relief="raised", highlightthickness=0)
         label_lab = ttk.Label(self, text="MOITESSIER LABORATORY\nMCGILL UNIVERSITY",
                               font=("Helvetica Black", 12, "bold"), justify="right")
-        label_app_name = ttk.Label(self, text="PROGRAM", font=("Helvetica Black", 12, "bold"))
+        label_app_name = ttk.Label(self, text="GATE", font=("Helvetica Black", 12, "bold"))
         label_tool_name = ttk.Label(self, text=tool_name, font=("Helvetica Black", 23, "bold"))
 
 

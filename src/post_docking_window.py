@@ -54,7 +54,7 @@ class PostDockingWindow(tk.Frame):
 
         label_lab = ttk.Label(self, text="MOITESSIER LABORATORY\nMCGILL UNIVERSITY",
                               font=("Helvetica Black", 12, "bold"), justify="right")
-        label_app_name = ttk.Label(self, text="PROGRAM", font=("Helvetica Black", 12, "bold"))
+        label_app_name = ttk.Label(self, text="GATE", font=("Helvetica Black", 12, "bold"))
         label_title = ttk.Label(self, text="POST-DOCKING", font=("Helvetica Black", 35, "bold"))
 
         # Scrollable grid like Misc
